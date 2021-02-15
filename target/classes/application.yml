@@ -23,11 +23,11 @@ spring:
   jpa:
     open-in-view: true # lazy loading 전략 사용 (default true)
     hibernate:
-      ddl-auto: create # update
+      ddl-auto: update # create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       use-new-id-generator-mappings: false # jpa가 사용하는 기본 넘버링 전략을 사용하지 않음.
-    show-sql: true # 콘솔 창에 sql을 보여준다.
+    show-sql: false # 콘솔 창에 sql을 보여준다.
     properties:
       hibernate.format_sql: true # sql 인덴트 넣어서 이쁘게 보여줌.
 
