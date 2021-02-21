@@ -1,10 +1,14 @@
 package com.toyspb.blog.service;
 
+import com.toyspb.blog.dto.ReplySaveRequestDto;
 import com.toyspb.blog.model.Board;
+import com.toyspb.blog.model.Reply;
 import com.toyspb.blog.model.RoleType;
 import com.toyspb.blog.model.User;
 import com.toyspb.blog.repository.BoardRepository;
+import com.toyspb.blog.repository.ReplyRepository;
 import com.toyspb.blog.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,10 +20,12 @@ import java.util.List;
 
 
 @Service
+@RequiredArgsConstructor
 public class BoardService {
 
-    @Autowired
-    private BoardRepository boardRepository;
+
+    private final BoardRepository boardRepository;
+    private final ReplyRepository replyRepository;
 
     @Transactional
     public void 글쓰기(Board board, User user){
@@ -56,5 +62,15 @@ public class BoardService {
         board.setTitle(requestBoard.getTitle());
         board.setContent(requestBoard.getContent());
         // 해당 함수로 종료시(Service 가 종료될 때) 트랜잭션이 종료됩니다. 이때 더티체킹 - 자동 업데이트가 됨. DB flush
+    }
+
+    @Transactional
+    public void 댓글쓰기(ReplySaveRequestDto replySaveRequestDto) {
+        replyRepository.mSave(replySaveRequestDto.getUserId(), replySaveRequestDto.getBoardId(), replySaveRequestDto.getContent());
+    }
+
+    @Transactional
+    public void 댓글삭제(int replyId) {
+        replyRepository.deleteById(replyId);
     }
 }
